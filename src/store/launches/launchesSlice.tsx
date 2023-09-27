@@ -8,7 +8,7 @@ interface Props {
   totalPages: number;
 }
 
-const initialState = {
+const initialState:Props = {
   lanches: [],
   page: 1,
   totalPages: 1,

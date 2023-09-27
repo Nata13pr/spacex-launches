@@ -1,13 +1,18 @@
-import { useMemo, useState } from "react";
+import {  useState } from "react";
 import { useSelector } from "react-redux";
 import { IUser } from "../models/models";
-// import Filter from "./Filter";
-// import LaunchList from "./LaunchesList";
-// import Modal from "./Modal/Modal";
+
 import { RootState } from "../store";
 import Filter from "./Filter";
 import LaunchList from "./LaunchesList";
 import Modal from "./Modal/Modal";
+import styled from '@emotion/styled'
+
+const  ListWrapper =styled.ul`
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+`;
+
 
 export default function LaunchesView() {
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +26,7 @@ export default function LaunchesView() {
     setShowModal((prevState) => !prevState);
   };
 
-  const handlerOnClick = (item: string) => {
+  const handlerOnClick = (item: string ) => {
     setDetails(item);
   };
 
@@ -101,13 +106,13 @@ export default function LaunchesView() {
           {details ? details : "No details available"}
         </Modal>
       )}
-      <ul>
+      <ListWrapper>
         <LaunchList
           handlerOnClick={handlerOnClick}
           toggleModal={toggleModal}
           launches={launchesFilteredByDate}
         />
-      </ul>
+      </ListWrapper>
     </div>
   );
 }
