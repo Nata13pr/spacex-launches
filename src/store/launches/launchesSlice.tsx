@@ -1,29 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser, ServerResponse } from "../../models/models";
+import { IUser } from "../../models/models";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface Props{
-  lanches: IUser[],
+interface Props {
+  lanches: IUser[];
   page: number;
   totalPages: number;
 }
 
-const initialState:Props  = {
+const initialState = {
   lanches: [],
   page: 1,
   totalPages: 1,
-};
+} as Props;
 
 export const launchesSlice = createSlice({
   name: "launches",
   initialState,
   reducers: {
-    addLanches: (state, action) => {
-      state.lanches = [...state.lanches, ...action.payload.docs];
+    addLanches: (state, action: PayloadAction<IUser[]>) => {
+      state.lanches = [...state.lanches, ...action.payload];
     },
-    setTotalPage: (state, action) => {
+    setTotalPage: (state, action: PayloadAction<number>) => {
       state.totalPages = action.payload;
     },
-    setPage: (state, action) => {
+    setPage: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
     },
   },
