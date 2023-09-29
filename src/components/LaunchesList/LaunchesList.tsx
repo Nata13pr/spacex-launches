@@ -1,4 +1,5 @@
 import { IUser } from "../../models/models";
+import noImage from "../noImage.png";
 import styled from "@emotion/styled";
 
 const ListItem = styled.li`
@@ -33,7 +34,12 @@ const LaunchList = ({ launches, addDetails, toggleModal }: Props) => {
         return (
           <ListItem key={launch.id} onClick={() => addDetails(launch.name)}>
             <div onClick={toggleModal}>
-              <Image src={launch.links.patch.small} alt={launch.name} />
+              {launch.links.patch.small ? (
+                <Image src={launch.links.patch.small} alt={launch.name} />
+              ) : (
+                <Image src={noImage} alt="no picture available" />
+              )}
+
               <div>Name: {launch.name}</div>
               <div>Flight Number: {launch.flight_number}</div>
               <div>Data: {launch.date_utc.slice(0, 4)}</div>

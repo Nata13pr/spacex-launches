@@ -9,6 +9,7 @@ const ModalBackdrop = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 800;
 `;
 
 const ModalContent = styled.div`
@@ -24,9 +25,10 @@ const ModalContent = styled.div`
   border-radius: 3px;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  z-index: 999;
 `;
 
-const modalRoot = document.querySelector("#modal-root") as HTMLElement;
+// const modalRoot = document.querySelector("#modal-root") as HTMLElement;
 
 interface Props {
   children: React.ReactNode;
@@ -53,11 +55,15 @@ export default function Modal({ children, onClose }: Props) {
       onClose();
     }
   };
-
-  return createPortal(
+  return (
     <ModalBackdrop onClick={handleBackDropClick}>
       <ModalContent>{children}</ModalContent>
-    </ModalBackdrop>,
-    modalRoot
+    </ModalBackdrop>
   );
+  // return createPortal(
+  //   <ModalBackdrop onClick={handleBackDropClick}>
+  //     <ModalContent>{children}</ModalContent>
+  //   </ModalBackdrop>,
+  //   modalRoot
+  // );
 }
