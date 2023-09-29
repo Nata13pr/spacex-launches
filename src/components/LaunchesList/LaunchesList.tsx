@@ -1,6 +1,8 @@
 import { IUser } from "../../models/models";
-import noImage from "../noImage.png";
+import noAvailableImage from "../noAvailableImage.png";
 import styled from "@emotion/styled";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
 
 const ListItem = styled.li`
   box-sizing: border-box;
@@ -23,26 +25,53 @@ const Image = styled.img`
 
 interface Props {
   launches: IUser[];
-  addDetails: (item: string) => void;
-  toggleModal: () => void;
+  // addDetails: ({ flightName: string }) => void;
+  // toggleModal: () => void;
 }
 
-const LaunchList = ({ launches, addDetails, toggleModal }: Props) => {
+const LaunchList = ({
+  launches,
+}: // addDetails, toggleModal
+Props) => {
+  const [showModal, setShowModal] = useState(false);
+  const [details, setDetails] = useState([""]);
+
+  const toggleModal = () => {
+    setShowModal((prevState) => !prevState);
+  };
+
+  const addDetails = (item: string[]) => {
+    setDetails(item);
+  };
+
   return (
     <>
+      {showModal && (
+        <Modal onClose={toggleModal}>
+          {details.map((detail) => <div key={detail}>{detail}</div>) ||
+            "No details available"}
+        </Modal>
+      )}
       {launches.map((launch) => {
         return (
-          <ListItem key={launch.id} onClick={() => addDetails(launch.name)}>
+          <ListItem
+            key={launch.id}
+            onClick={() =>
+              addDetails([
+                `Flight Name: ${launch.name}`,
+                `Flight number :`,
+                String(launch.flight_number),
+                launch.details || "No details available",
+                `Year of flight: ${launch.date_utc.slice(0, 4)}`,
+              ])
+            }
+          >
             <div onClick={toggleModal}>
               {launch.links.patch.small ? (
                 <Image src={launch.links.patch.small} alt={launch.name} />
               ) : (
-                <Image src={noImage} alt="no picture available" />
+                <Image src={noAvailableImage} alt="no picture available" />
               )}
-
-              <div>Name: {launch.name}</div>
-              <div>Flight Number: {launch.flight_number}</div>
-              <div>Data: {launch.date_utc.slice(0, 4)}</div>
             </div>
           </ListItem>
         );

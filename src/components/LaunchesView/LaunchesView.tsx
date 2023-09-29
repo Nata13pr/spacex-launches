@@ -13,20 +13,20 @@ const ListWrapper = styled.ul`
 `;
 
 export default function LaunchesView() {
-  const [showModal, setShowModal] = useState(false);
-  const [details, setDetails] = useState("");
+  // const [showModal, setShowModal] = useState(false);
+  // const [details, setDetails] = useState({});
   const [name, setName] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
   const [date, setDate] = useState("");
   const launches = useSelector((state: RootState) => state.launches.launches);
 
-  const toggleModal = () => {
-    setShowModal((prevState) => !prevState);
-  };
+  // const toggleModal = () => {
+  //   setShowModal((prevState) => !prevState);
+  // };
 
-  const addDetails = (item: string) => {
-    setDetails(item);
-  };
+  // const addDetails = (item: string) => {
+  //   setDetails(item);
+  // };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -100,13 +100,13 @@ export default function LaunchesView() {
         onFilterChange={handleFilterChange}
       />
 
-      {showModal && (
+      {/* {showModal && (
         <Modal onClose={toggleModal}>{details || "No details available"}</Modal>
-      )}
+      )} */}
       <ListWrapper>
         <LaunchList
-          addDetails={addDetails}
-          toggleModal={toggleModal}
+          // addDetails={addDetails}
+          // toggleModal={toggleModal}
           launches={launchesFilterByDate}
         />
       </ListWrapper>

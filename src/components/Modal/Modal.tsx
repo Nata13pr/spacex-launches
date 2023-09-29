@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
 import styled from "@emotion/styled";
 
 const ModalBackdrop = styled.div`
@@ -28,8 +27,7 @@ const ModalContent = styled.div`
   z-index: 999;
 `;
 
-// const modalRoot = document.querySelector("#modal-root") as HTMLElement;
-
+//
 interface Props {
   children: React.ReactNode;
   onClose: () => void;
@@ -60,10 +58,4 @@ export default function Modal({ children, onClose }: Props) {
       <ModalContent>{children}</ModalContent>
     </ModalBackdrop>
   );
-  // return createPortal(
-  //   <ModalBackdrop onClick={handleBackDropClick}>
-  //     <ModalContent>{children}</ModalContent>
-  //   </ModalBackdrop>,
-  //   modalRoot
-  // );
 }
