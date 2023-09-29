@@ -1,4 +1,4 @@
-import { ServerResponse, IUser } from "./../../models/models";
+import { ServerResponse, IUser } from "../models/models";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axios from "axios";
@@ -48,7 +48,7 @@ export const launchesApi = createApi({
           options: {
             page,
             sort: {
-              date_utc: "asc",
+              date_utc: "desc",
             },
           },
         },

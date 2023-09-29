@@ -1,41 +1,63 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import './Modal.css'
+import styled from "@emotion/styled";
 
-const modalRoot=document.querySelector('#modal-root') as HTMLElement;;
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
 
-interface Props{
-    children:React.ReactNode;
-    onClose:()=>void;
+const ModalContent = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 300px;
+  max-width: 600px;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+`;
+
+const modalRoot = document.querySelector("#modal-root") as HTMLElement;
+
+interface Props {
+  children: React.ReactNode;
+  onClose: () => void;
 }
 
-export default function Modal ({children,onClose}:Props){
-    useEffect(()=>{
-        window.addEventListener('keydown',handleKeyDown)
+export default function Modal({ children, onClose }: Props) {
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-          };
-    },[])
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
-   const  handleKeyDown =(e:KeyboardEvent)=>{
-        if(e.code==='Escape'){
-            onClose();
-        }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      onClose();
     }
+  };
 
-const handleBackDropClick=(e:React.MouseEvent<HTMLDivElement>)=>{
-    if(e.currentTarget===e.target){
-        onClose()
+  const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget === e.target) {
+      onClose();
     }
+  };
+
+  return createPortal(
+    <ModalBackdrop onClick={handleBackDropClick}>
+      <ModalContent>{children}</ModalContent>
+    </ModalBackdrop>,
+    modalRoot
+  );
 }
-   
-        return createPortal(
-            <div   className='Modal__backdrop' onClick={handleBackDropClick}>
-                <div className="Modal__content">{children}</div>
-            </div>,
-            modalRoot
-        )
-    }
-
-

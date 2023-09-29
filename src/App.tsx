@@ -1,44 +1,39 @@
-import React, { useEffect } from "react";
-import { useGetLaunchesByNameQuery } from "./store/launches/launches.api";
+import { useEffect, useState } from "react";
+import { useGetLaunchesByNameQuery } from "./api/launches.api";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addLanches,
-  setPage,
-  setTotalPage,
-} from "./store/launches/launchesSlice";
+import { addLaunches, setTotalPage } from "./store/launches/launchesSlice";
 import { RootState } from "./store";
 import LaunchesView from "./components/LaunchesView";
 
 function App() {
-  const page = useSelector((state: RootState) => state.launches.page);
   const totalPages = useSelector(
     (state: RootState) => state.launches.totalPages
   );
-
-  const { data, error, isLoading } = useGetLaunchesByNameQuery(page);
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useGetLaunchesByNameQuery(page);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (data) {
-      dispatch(addLanches(data.docs));
+      dispatch(addLaunches(data.docs));
       dispatch(setTotalPage(data.totalPages));
-      dispatch(setPage(data.page));
+      setPage(data.page);
     }
-  }, [data]);
+  }, [data, dispatch]);
 
-  const handleLoadMore = () => {
+  const handleButtonLoadMore = () => {
     const nextPage = page + 1;
     if (nextPage > totalPages) {
       return;
     }
-    dispatch(setPage(nextPage));
+    setPage(nextPage);
   };
 
   return (
     <div>
       {isLoading && <p>Loading...</p>}
       <LaunchesView />
-      <button onClick={handleLoadMore}>Load more</button>
+      <button onClick={handleButtonLoadMore}>Load more</button>
     </div>
   );
 }
