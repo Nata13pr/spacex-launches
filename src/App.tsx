@@ -21,19 +21,31 @@ function App() {
     }
   }, [data, dispatch]);
 
-  const handleButtonLoadMore = () => {
-    const nextPage = page + 1;
-    if (nextPage > totalPages) {
-      return;
+  const scrollHandler = (e: any) => {
+    if (
+      e.target.documentElement.scrollHeight -
+        (e.target.documentElement.scrollTop + window.innerHeight) <
+      100
+    ) {
+      const nextPage = page + 1;
+      if (nextPage > totalPages) {
+        return;
+      }
+      setPage(nextPage);
     }
-    setPage(nextPage);
   };
+
+  useEffect(() => {
+    document.addEventListener("scroll", scrollHandler);
+    return function () {
+      document.addEventListener("scroll", scrollHandler);
+    };
+  }, [scrollHandler]);
 
   return (
     <div>
       {isLoading && <p>Loading...</p>}
       <LaunchesView />
-      <button onClick={handleButtonLoadMore}>Load more</button>
     </div>
   );
 }
