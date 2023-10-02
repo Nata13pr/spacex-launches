@@ -1,52 +1,59 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useGetLaunchesByNameQuery } from "./api/launches.api";
-import { useDispatch, useSelector } from "react-redux";
-import { addLaunches, setTotalPage } from "./store/launches/launchesSlice";
-import { RootState } from "./store";
+import { addLaunches } from "./store/launches/launchesSlice";
 import LaunchesView from "./components/LaunchesView";
+import { ContainerDiv } from "./App.styled";
 
 function App() {
-  const totalPages = useSelector(
-    (state: RootState) => state.launches.totalPages
-  );
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useGetLaunchesByNameQuery(page);
+  const [totalPages, setTotalPages] = useState(1);
+  const [scrollTop, setScrollTop] = useState(0);
+  const { data, isLoading, isFetching } = useGetLaunchesByNameQuery(page);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data) {
+    if (data && !isFetching) {
       dispatch(addLaunches(data.docs));
-      dispatch(setTotalPage(data.totalPages));
+      setTotalPages(data.totalPages);
       setPage(data.page);
     }
-  }, [data, dispatch]);
-
-  const scrollHandler = (e: any) => {
-    if (
-      e.target.documentElement.scrollHeight -
-        (e.target.documentElement.scrollTop + window.innerHeight) <
-      100
-    ) {
-      const nextPage = page + 1;
-      if (nextPage > totalPages) {
-        return;
-      }
-      setPage(nextPage);
-    }
-  };
+  }, [isFetching]);
 
   useEffect(() => {
-    document.addEventListener("scroll", scrollHandler);
-    return function () {
-      document.addEventListener("scroll", scrollHandler);
+    const onScroll = (e: any) => {
+      console.log(e.target.documentElement.scrollTop);
+
+      setScrollTop(e.target.documentElement.scrollTop);
     };
-  }, [scrollHandler]);
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scrollTop]);
+
+  useEffect(() => {
+    const windowHeight = Math.max(
+      document.body.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.scrollHeight,
+      document.documentElement.offsetHeight
+    );
+    if (
+      scrollTop !== 0 &&
+      scrollTop + window.innerHeight > windowHeight - window.innerHeight &&
+      !isLoading &&
+      page < totalPages
+    ) {
+      setPage(page + 1);
+      setScrollTop(0);
+    }
+  }, [scrollTop]);
 
   return (
-    <div>
+    <ContainerDiv>
       {isLoading && <p>Loading...</p>}
       <LaunchesView />
-    </div>
+    </ContainerDiv>
   );
 }
 

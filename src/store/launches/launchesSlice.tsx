@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../../models/models";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from "../../models/models";
 
 interface Props {
   launches: IUser[];
@@ -19,13 +19,9 @@ export const launchesSlice = createSlice({
     addLaunches: (state, action: PayloadAction<IUser[]>) => {
       state.launches = [...state.launches, ...action.payload];
     },
-    setTotalPage: (state, action: PayloadAction<number>) => {
-      state.totalPages = action.payload;
-    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { addLaunches, setTotalPage } = launchesSlice.actions;
+export const { addLaunches } = launchesSlice.actions;
 
 export default launchesSlice.reducer;

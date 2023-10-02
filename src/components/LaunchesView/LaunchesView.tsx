@@ -1,32 +1,16 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { IUser } from "../../models/models";
 import { RootState } from "../../store";
 import Filter from "../Filter";
-import Modal from "../Modal/Modal";
-import styled from "@emotion/styled";
 import LaunchList from "../LaunchesList";
-
-const ListWrapper = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-`;
+import { IFilter, IUser } from "../../models/models";
+import { FilterWrapper, ListWrapper } from "./LaunchesView.styled";
 
 export default function LaunchesView() {
-  // const [showModal, setShowModal] = useState(false);
-  // const [details, setDetails] = useState({});
   const [name, setName] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
   const [date, setDate] = useState("");
   const launches = useSelector((state: RootState) => state.launches.launches);
-
-  // const toggleModal = () => {
-  //   setShowModal((prevState) => !prevState);
-  // };
-
-  // const addDetails = (item: string) => {
-  //   setDetails(item);
-  // };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -79,36 +63,29 @@ export default function LaunchesView() {
     filterByFlightNumber(launchesFilterByName);
   const launchesFilterByDate = filterByDate(launchesFilterByFlightNumber);
 
+  const filtersInfo: IFilter[] = [
+    { name: "name", value: name, title: "Flight Name" },
+    { name: "flightNumber", value: flightNumber, title: "Flight Number" },
+    { name: "date", value: date, title: "Year of the flight" },
+  ];
+
   return (
     <div>
-      <Filter
-        name="name"
-        value={name}
-        title="Name"
-        onFilterChange={handleFilterChange}
-      />
-      <Filter
-        name="flightNumber"
-        value={flightNumber}
-        title="Flight Number"
-        onFilterChange={handleFilterChange}
-      />
-      <Filter
-        name="date"
-        value={date}
-        title="Date"
-        onFilterChange={handleFilterChange}
-      />
-
-      {/* {showModal && (
-        <Modal onClose={toggleModal}>{details || "No details available"}</Modal>
-      )} */}
+      <FilterWrapper>
+        {filtersInfo.map((item) => {
+          return (
+            <Filter
+              key={item.name}
+              name={item.name}
+              value={item.value}
+              title={item.title}
+              onFilterChange={handleFilterChange}
+            />
+          );
+        })}
+      </FilterWrapper>
       <ListWrapper>
-        <LaunchList
-          // addDetails={addDetails}
-          // toggleModal={toggleModal}
-          launches={launchesFilterByDate}
-        />
+        <LaunchList launches={launchesFilterByDate} />
       </ListWrapper>
     </div>
   );

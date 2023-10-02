@@ -1,39 +1,16 @@
+import React from "react";
 import { useEffect } from "react";
-import styled from "@emotion/styled";
+import { IUser } from "../../models/models";
+import { ModalBackdrop, ModalContent } from "./Modal.styled";
 
-const ModalBackdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 800;
-`;
-
-const ModalContent = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 300px;
-  max-width: 600px;
-  width: 100%;
-  padding: 12px;
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  z-index: 999;
-`;
-
-//
 interface Props {
-  children: React.ReactNode;
   onClose: () => void;
+  detailsObject: IUser;
 }
 
-export default function Modal({ children, onClose }: Props) {
+export default function Modal({ detailsObject, onClose }: Props) {
+  console.log(detailsObject);
+
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
@@ -55,7 +32,14 @@ export default function Modal({ children, onClose }: Props) {
   };
   return (
     <ModalBackdrop onClick={handleBackDropClick}>
-      <ModalContent>{children}</ModalContent>
+      <ModalContent>
+        <h2>Flight name: {detailsObject.name}</h2>
+        <p>Fligh number:{detailsObject.flight_number}</p>
+        {detailsObject.details && (
+          <p>Flight details: {detailsObject.details}</p>
+        )}
+        <p>Year of the flight:{detailsObject.date_utc.slice(0, 4)}</p>
+      </ModalContent>
     </ModalBackdrop>
   );
 }

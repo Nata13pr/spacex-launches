@@ -1,3 +1,5 @@
+import React from "react";
+
 interface Props {
   value: string;
   onFilterChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

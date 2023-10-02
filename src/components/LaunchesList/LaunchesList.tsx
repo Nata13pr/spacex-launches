@@ -1,79 +1,56 @@
+import React, { useState } from "react";
 import { IUser } from "../../models/models";
-import noAvailableImage from "../noAvailableImage.png";
-import styled from "@emotion/styled";
-import { useState } from "react";
 import Modal from "../Modal/Modal";
+import noAvailableImage from "../launch.png";
 
-const ListItem = styled.li`
-  box-sizing: border-box;
-  display: block;
-  position: relative;
-  list-style: none;
-  width: 150px;
-
-  float: left;
-
-  margin: 15px;
-  padding: 15px;
-`;
-
-const Image = styled.img`
-  width: 300px;
-  height: 300px;
-  z-index: 1;
-`;
+import {
+  SmallPatchImg,
+  LaunchLi,
+  NameP,
+  NoAvailableImg,
+} from "./LaunchesList.styled";
 
 interface Props {
   launches: IUser[];
-  // addDetails: ({ flightName: string }) => void;
-  // toggleModal: () => void;
 }
 
-const LaunchList = ({
-  launches,
-}: // addDetails, toggleModal
-Props) => {
+const LaunchList = ({ launches }: Props) => {
   const [showModal, setShowModal] = useState(false);
-  const [details, setDetails] = useState([""]);
+  const [details, setDetails] = useState<IUser | null>(null);
 
   const toggleModal = () => {
     setShowModal((prevState) => !prevState);
   };
 
-  const addDetails = (item: string[]) => {
+  const addDetails = (item: IUser) => {
+    console.log(item);
+
     setDetails(item);
   };
 
   return (
     <>
-      {showModal && (
-        <Modal onClose={toggleModal}>
-          {details.map((detail) => <div key={detail}>{detail}</div>) ||
-            "No details available"}
-        </Modal>
+      {showModal && details && (
+        <Modal onClose={toggleModal} detailsObject={details}></Modal>
       )}
       {launches.map((launch) => {
         return (
-          <ListItem
-            key={launch.id}
-            onClick={() =>
-              addDetails([
-                `Flight Name: ${launch.name}`,
-                `Flight number :`,
-                String(launch.flight_number),
-                launch.details || "No details available",
-                `Year of flight: ${launch.date_utc.slice(0, 4)}`,
-              ])
-            }
-          >
+          <LaunchLi key={launch.id} onClick={() => addDetails(launch)}>
             <div onClick={toggleModal}>
               {launch.links.patch.small ? (
-                <Image src={launch.links.patch.small} alt={launch.name} />
+                <SmallPatchImg
+                  src={launch.links.patch.small}
+                  alt={launch.name}
+                />
               ) : (
-                <Image src={noAvailableImage} alt="no picture available" />
+                <NoAvailableImg
+                  src={noAvailableImage}
+                  alt="no picture available"
+                />
               )}
+              <NameP>{launch.name}</NameP>
             </div>
-          </ListItem>
+          </LaunchLi>
         );
       })}
     </>

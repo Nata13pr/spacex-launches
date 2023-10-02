@@ -99,3 +99,9 @@ export interface Fairing {
   recovered?: boolean;
   ships: any[];
 }
+
+export interface IFilter {
+  name: string;
+  title: string;
+  value: string;
+}

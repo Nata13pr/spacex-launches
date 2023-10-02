@@ -1,8 +1,7 @@
-import { ServerResponse, IUser } from "../models/models";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
+import { ServerResponse, IUser } from "../models/models";
 
 const axiosBaseQuery =
   (
