@@ -35,19 +35,44 @@ export const launchesApi = createApi({
   reducerPath: "launchesApi",
   baseQuery: axiosBaseQuery({ baseUrl: "https://api.spacexdata.com/v5/" }),
   endpoints: (builder) => ({
-    getLaunchesByName: builder.query<ServerResponse<IUser>, number>({
-      query: (page: number) => ({
+    getLaunchesByName: builder.query<
+      ServerResponse<IUser>,
+      {
+        page: number;
+        flightnumberNumber: number;
+        debouncedRocketNumber: string;
+        debouncedName: string;
+      }
+    >({
+      query: (params: {
+        page: number;
+        flightnumberNumber: number;
+        debouncedRocketNumber: string;
+        debouncedName: string;
+      }) => ({
         url: "launches/query",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         data: {
-          query: {},
+          query: {
+            $or: [
+              {
+                flight_number: params.flightnumberNumber,
+              },
+              {
+                name: params.debouncedName,
+              },
+              {
+                rocket: params.debouncedRocketNumber,
+              },
+            ],
+          },
           options: {
-            page,
+            // page: params.flightName,
             sort: {
-              date_utc: "desc",
+              data_utc: "asc",
             },
           },
         },

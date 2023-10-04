@@ -1,6 +1,7 @@
 export interface ServerResponse<T> {
   docs: T[];
   totalDocs: number;
+  offset: number;
   limit: number;
   totalPages: number;
   page: number;
@@ -18,7 +19,7 @@ export interface IUser {
   static_fire_date_unix?: number;
   net: boolean;
   window: number;
-  rocket: string;
+  rocket: Rocket;
   success: boolean;
   failures: (Failure | Failures2)[];
   details?: string;
@@ -65,6 +66,11 @@ export interface Failure {
   reason: string;
 }
 
+interface Rocket {
+  name: string;
+  id: string;
+}
+
 export interface Links {
   patch: Patch;
   reddit: Reddit;
@@ -104,4 +110,5 @@ export interface IFilter {
   name: string;
   title: string;
   value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

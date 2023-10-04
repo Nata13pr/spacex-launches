@@ -48,7 +48,7 @@ const LaunchList = ({ launches }: Props) => {
                   alt="no picture available"
                 />
               )}
-              <NameP>{launch.name}</NameP>
+              <NameP>{launch.rocket.name}</NameP>
             </div>
           </LaunchLi>
         );
