@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import Filter from "../Filter";
 import LaunchList from "../LaunchesList";
-import { IFilter, IUser } from "../../models/models";
 import { FilterWrapper, ListWrapper } from "./LaunchesView.styled";
-import { useDebounce } from "../../hooks/debounced";
+
 import {
   changeFlightName,
   changeFlightNumber,
@@ -20,12 +17,10 @@ export default function LaunchesView() {
   const flightNumber = useSelector(
     (state: RootState) => state.launches.flightNumber
   );
-  const rocketNumber = useSelector(
-    (state: RootState) => state.launches.rocketNumber
+  const yearOfTheFlight = useSelector(
+    (state: RootState) => state.launches.yearOfTheFlight
   );
   const dispatch = useDispatch();
-
-  console.log(launches);
 
   return (
     <div>
@@ -47,10 +42,10 @@ export default function LaunchesView() {
           ></input>
         </label>
         <label>
-          Rocket Name
+          Year of the flight
           <input
             type="text"
-            value={rocketNumber}
+            value={yearOfTheFlight}
             onChange={(e) => dispatch(changeRocketNumber(e.target.value))}
           ></input>
         </label>

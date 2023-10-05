@@ -5,7 +5,6 @@ import { addLaunches } from "./store/launches/launchesSlice";
 import LaunchesView from "./components/LaunchesView";
 import { ContainerDiv } from "./App.styled";
 import { RootState } from "./store";
-import { useDebounce } from "./hooks/debounced";
 
 function App() {
   const [page, setPage] = useState(1);
@@ -18,22 +17,17 @@ function App() {
   const flightNumber = useSelector(
     (state: RootState) => state.launches.flightNumber
   );
-  const rocketNumber = useSelector(
-    (state: RootState) => state.launches.rocketNumber
+  const yearOfTheFlight = useSelector(
+    (state: RootState) => state.launches.yearOfTheFlight
   );
-  const debouncedName = useDebounce(flightName, 100);
-  const debouncedRocketNumber = useDebounce(rocketNumber, 100);
-  const debouncedFlightNumber = useDebounce(flightNumber, 100);
-  const flightnumberNumber = Number(flightNumber);
+
   const { data, isLoading, isFetching } = useGetLaunchesByNameQuery({
     page,
-
-    flightnumberNumber,
-    debouncedRocketNumber,
-    debouncedName,
+    yearOfTheFlight,
+    flightNumber,
+    flightName,
   });
   const dispatch = useDispatch();
-  console.log(data);
 
   useEffect(() => {
     if (data && !isFetching) {

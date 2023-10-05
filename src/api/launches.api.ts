@@ -3,6 +3,17 @@ import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { ServerResponse, IUser } from "../models/models";
 
+const createFlightNumberOutput = (flightNumber: string) =>
+  flightNumber ? { flight_number: { $eq: flightNumber } } : "";
+const createFlightNameOutput = (flightName: string) =>
+  flightName !== "" ? { name: { $regex: flightName, $options: "i" } } : "";
+const createYearOfTheFlightOutput = (yearOfTheFlight: string) =>
+  yearOfTheFlight !== ""
+    ? {
+        date_utc: { $regex: `^${yearOfTheFlight.substr(0, 4)}`, $options: "i" },
+      }
+    : "";
+
 const axiosBaseQuery =
   (
     { baseUrl }: { baseUrl: string } = { baseUrl: "" }
@@ -39,16 +50,16 @@ export const launchesApi = createApi({
       ServerResponse<IUser>,
       {
         page: number;
-        flightnumberNumber: number;
-        debouncedRocketNumber: string;
-        debouncedName: string;
+        yearOfTheFlight: string;
+        flightNumber: string;
+        flightName: string;
       }
     >({
       query: (params: {
         page: number;
-        flightnumberNumber: number;
-        debouncedRocketNumber: string;
-        debouncedName: string;
+        yearOfTheFlight: string;
+        flightNumber: string;
+        flightName: string;
       }) => ({
         url: "launches/query",
         method: "POST",
@@ -57,22 +68,14 @@ export const launchesApi = createApi({
         },
         data: {
           query: {
-            $or: [
-              {
-                flight_number: params.flightnumberNumber,
-              },
-              {
-                name: params.debouncedName,
-              },
-              {
-                rocket: params.debouncedRocketNumber,
-              },
-            ],
+            ...createYearOfTheFlightOutput(params.yearOfTheFlight),
+            ...createFlightNumberOutput(params.flightNumber),
+            ...createFlightNameOutput(params.flightName),
           },
           options: {
-            // page: params.flightName,
+            page: params.page,
             sort: {
-              data_utc: "asc",
+              data_utc: "desc",
             },
           },
         },

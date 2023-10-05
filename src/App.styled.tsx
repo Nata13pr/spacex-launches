@@ -23,8 +23,6 @@ export const ContainerDiv = styled.div`
     max-width: 1320px;
     padding-left: 20px;
     padding-right: 20px;
-    padding-right: 15px;
-    padding-left: 15px;
     margin-left: auto;
     margin-right: auto;
   }
