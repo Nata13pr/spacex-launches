@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const LaunchLi = styled.li`
+export const Launch = styled.li`
   box-sizing: border-box;
   display: block;
   position: relative;
@@ -18,19 +18,19 @@ export const LaunchLi = styled.li`
   }
 `;
 
-export const SmallPatchImg = styled.img`
+export const SmallPatchImage = styled.img`
   display: block;
   margin: auto;
   width: 250px;
 `;
 
-export const NameP = styled.p`
+export const Name = styled.p`
   text-align: center;
   font-size: 25px;
   font-weight: bold;
 `;
 
-export const NoAvailableImg = styled.img`
+export const NoAvailableImage = styled.img`
   background-color: grey;
   display: block;
   margin: auto;

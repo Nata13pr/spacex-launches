@@ -50,16 +50,16 @@ export const launchesApi = createApi({
       ServerResponse<IUser>,
       {
         page: number;
-        yearOfTheFlight: string;
-        flightNumber: string;
-        flightName: string;
+        searchYearOfTheFlight: string;
+        searchFlightNumber: string;
+        searchFlightName: string;
       }
     >({
       query: (params: {
         page: number;
-        yearOfTheFlight: string;
-        flightNumber: string;
-        flightName: string;
+        searchYearOfTheFlight: string;
+        searchFlightNumber: string;
+        searchFlightName: string;
       }) => ({
         url: "launches/query",
         method: "POST",
@@ -68,14 +68,14 @@ export const launchesApi = createApi({
         },
         data: {
           query: {
-            ...createYearOfTheFlightOutput(params.yearOfTheFlight),
-            ...createFlightNumberOutput(params.flightNumber),
-            ...createFlightNameOutput(params.flightName),
+            ...createYearOfTheFlightOutput(params.searchYearOfTheFlight),
+            ...createFlightNumberOutput(params.searchFlightNumber),
+            ...createFlightNameOutput(params.searchFlightName),
           },
           options: {
             page: params.page,
             sort: {
-              data_utc: "asc",
+              data_utc: "desc",
             },
           },
         },

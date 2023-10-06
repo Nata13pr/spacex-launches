@@ -25,7 +25,7 @@ export const launchesSlice = createSlice({
     addLaunches: (state, action: PayloadAction<IUser[]>) => {
       state.launches = [...state.launches, ...action.payload];
     },
-    changeRocketNumber: (state, action: PayloadAction<string>) => {
+    changeYearOfTheFlight: (state, action: PayloadAction<string>) => {
       state.yearOfTheFlight = action.payload;
       state.launches = [];
     },
@@ -42,7 +42,7 @@ export const launchesSlice = createSlice({
 
 export const {
   addLaunches,
-  changeRocketNumber,
+  changeYearOfTheFlight,
   changeFlightNumber,
   changeFlightName,
 } = launchesSlice.actions;

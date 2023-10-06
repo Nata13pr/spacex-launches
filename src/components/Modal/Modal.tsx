@@ -34,11 +34,10 @@ export default function Modal({ detailsObject, onClose }: Props) {
     <ModalBackdrop onClick={handleBackDropClick}>
       <ModalContent>
         <h2>Flight name: {detailsObject.name}</h2>
-        <h3>Rocket name: {detailsObject.rocket.name}</h3>
         <p>Fligh number:{detailsObject.flight_number}</p>
-        {detailsObject.details && (
-          <p>Flight details: {detailsObject.details}</p>
-        )}
+
+        <p>Flight details: {detailsObject.details && "No details avaliable"}</p>
+
         <p>Year of the flight:{detailsObject.date_utc.slice(0, 4)}</p>
       </ModalContent>
     </ModalBackdrop>

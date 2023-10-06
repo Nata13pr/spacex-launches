@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { IUser } from "../../models/models";
 import Modal from "../Modal/Modal";
 import noAvailableImage from "../launch.png";
-
 import {
-  SmallPatchImg,
-  LaunchLi,
-  NameP,
-  NoAvailableImg,
+  NoAvailableImage,
+  SmallPatchImage,
+  Launch,
+  Name,
 } from "./LaunchesList.styled";
 
 interface Props {
@@ -35,22 +34,22 @@ const LaunchList = ({ launches }: Props) => {
       )}
       {launches.map((launch) => {
         return (
-          <LaunchLi key={launch.id} onClick={() => addDetails(launch)}>
+          <Launch key={launch.id} onClick={() => addDetails(launch)}>
             <div onClick={toggleModal}>
               {launch.links.patch.small ? (
-                <SmallPatchImg
+                <SmallPatchImage
                   src={launch.links.patch.small}
                   alt={launch.name}
                 />
               ) : (
-                <NoAvailableImg
+                <NoAvailableImage
                   src={noAvailableImage}
                   alt="no picture available"
                 />
               )}
-              <NameP>{launch.name}</NameP>
+              <Name>{launch.name}</Name>
             </div>
-          </LaunchLi>
+          </Launch>
         );
       })}
     </>
