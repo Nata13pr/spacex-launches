@@ -8,6 +8,8 @@ import {
   changeFlightNumber,
   changeRocketNumber,
 } from "../../store/launches/launchesSlice";
+import { useIsomorphicLayoutEffect } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import useDebounce from "../../hooks/useDebounce";
 
 export default function LaunchesView() {
   const launches = useSelector((state: RootState) => state.launches.launches);
@@ -22,8 +24,14 @@ export default function LaunchesView() {
   );
   const dispatch = useDispatch();
 
+  const debouncedflightName = useDebounce(flightName);
+
+  useIsomorphicLayoutEffect(() => {
+    dispatch(changeFlightName(debouncedflightName));
+  }, [debouncedflightName]);
+
   return (
-    <div>
+    <>
       <FilterWrapper>
         <label>
           Flight name
@@ -53,6 +61,6 @@ export default function LaunchesView() {
       <ListWrapper>
         <LaunchList launches={launches} />
       </ListWrapper>
-    </div>
+    </>
   );
 }

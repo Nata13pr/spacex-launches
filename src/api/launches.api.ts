@@ -75,7 +75,7 @@ export const launchesApi = createApi({
           options: {
             page: params.page,
             sort: {
-              data_utc: "desc",
+              data_utc: "asc",
             },
           },
         },
