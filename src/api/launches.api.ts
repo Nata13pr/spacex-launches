@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
+
 import { ServerResponse, IUser } from "../models/models";
 
 const createFlightNumberOutput = (flightNumber: string) =>
@@ -75,7 +76,7 @@ export const launchesApi = createApi({
           options: {
             page: params.page,
             sort: {
-              data_utc: "desc",
+              date_utc: "desc",
             },
           },
         },

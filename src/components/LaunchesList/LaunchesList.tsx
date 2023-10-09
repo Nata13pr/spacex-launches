@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { IUser } from "../../models/models";
 import Modal from "../Modal/Modal";
 import noAvailableImage from "../launch.png";
@@ -22,8 +23,6 @@ const LaunchList = ({ launches }: Props) => {
   };
 
   const addDetails = (item: IUser) => {
-    console.log(item);
-
     setDetails(item);
   };
 

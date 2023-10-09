@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
+
 import { IUser } from "../../models/models";
 import { ModalBackdrop, ModalContent } from "./Modal.styled";
 
@@ -9,8 +10,6 @@ interface Props {
 }
 
 export default function Modal({ detailsObject, onClose }: Props) {
-  console.log(detailsObject);
-
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
@@ -36,7 +35,9 @@ export default function Modal({ detailsObject, onClose }: Props) {
         <h2>Flight name: {detailsObject.name}</h2>
         <p>Fligh number:{detailsObject.flight_number}</p>
 
-        <p>Flight details: {detailsObject.details && "No details avaliable"}</p>
+        {detailsObject.details && (
+          <span> Flight details:{detailsObject.details}</span>
+        )}
 
         <p>Year of the flight:{detailsObject.date_utc.slice(0, 4)}</p>
       </ModalContent>

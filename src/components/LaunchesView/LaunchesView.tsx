@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootState } from "../../store";
 import LaunchList from "../LaunchesList";
 import { FilterWrapper, ListWrapper } from "./LaunchesView.styled";
@@ -57,12 +58,12 @@ export default function LaunchesView() {
   }, [debouncedYearOfTheFlight]);
 
   useEffect(() => {
-    if (data && !isFetching) {
+    if (data) {
       dispatch(addLaunches(data.docs));
       setTotalPages(data.totalPages);
       setPage(data.page);
     }
-  }, [isFetching]);
+  }, [data]);
 
   useEffect(() => {
     const onScroll = (e: any) => {
