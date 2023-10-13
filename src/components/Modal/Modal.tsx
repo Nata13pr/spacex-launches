@@ -1,41 +1,46 @@
-import {  useEffect } from "react";
-import { createPortal } from "react-dom";
-import './Modal.css'
+import React from "react";
+import { useEffect } from "react";
 
-const modalRoot=document.querySelector('#modal-root') as HTMLElement;;
+import { IUser } from "../../models/models";
+import { ModalBackdrop, ModalContent } from "./Modal.styled";
 
-interface Props{
-    children:React.ReactNode;
-    onClose:()=>void;
+interface Props {
+  onClose: () => void;
+  detailsObject: IUser;
 }
 
-export default function Modal ({children,onClose}:Props){
-    useEffect(()=>{
-        window.addEventListener('keydown',handleKeyDown)
+export default function Modal({ detailsObject, onClose }: Props) {
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-          };
-    },[])
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
-   const  handleKeyDown =(e:KeyboardEvent)=>{
-        if(e.code==='Escape'){
-            onClose();
-        }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      onClose();
     }
+  };
 
-const handleBackDropClick=(e:React.MouseEvent<HTMLDivElement>)=>{
-    if(e.currentTarget===e.target){
-        onClose()
+  const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget === e.target) {
+      onClose();
     }
+  };
+  return (
+    <ModalBackdrop onClick={handleBackDropClick}>
+      <ModalContent>
+        <h2>Flight name: {detailsObject.name}</h2>
+        <p>Fligh number:{detailsObject.flight_number}</p>
+
+        {detailsObject.details && (
+          <span> Flight details:{detailsObject.details}</span>
+        )}
+
+        <p>Year of the flight:{detailsObject.date_utc.slice(0, 4)}</p>
+      </ModalContent>
+    </ModalBackdrop>
+  );
 }
-   
-        return createPortal(
-            <div   className='Modal__backdrop' onClick={handleBackDropClick}>
-                <div className="Modal__content">{children}</div>
-            </div>,
-            modalRoot
-        )
-    }
-
-

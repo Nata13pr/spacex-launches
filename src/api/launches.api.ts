@@ -1,8 +1,19 @@
-import { ServerResponse, IUser } from "./../../models/models";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
+
+import { ServerResponse, IUser } from "../models/models";
+
+const createFlightNumberOutput = (flightNumber: string) =>
+  flightNumber ? { flight_number: { $eq: flightNumber } } : "";
+const createFlightNameOutput = (flightName: string) =>
+  flightName !== "" ? { name: { $regex: flightName, $options: "i" } } : "";
+const createYearOfTheFlightOutput = (yearOfTheFlight: string) =>
+  yearOfTheFlight !== ""
+    ? {
+        date_utc: { $regex: `^${yearOfTheFlight.substr(0, 4)}`, $options: "i" },
+      }
+    : "";
 
 const axiosBaseQuery =
   (
@@ -36,19 +47,36 @@ export const launchesApi = createApi({
   reducerPath: "launchesApi",
   baseQuery: axiosBaseQuery({ baseUrl: "https://api.spacexdata.com/v5/" }),
   endpoints: (builder) => ({
-    getLaunchesByName: builder.query<ServerResponse<IUser>, number>({
-      query: (page: number) => ({
+    getLaunchesByName: builder.query<
+      ServerResponse<IUser>,
+      {
+        page: number;
+        searchYearOfTheFlight: string;
+        searchFlightNumber: string;
+        searchFlightName: string;
+      }
+    >({
+      query: (params: {
+        page: number;
+        searchYearOfTheFlight: string;
+        searchFlightNumber: string;
+        searchFlightName: string;
+      }) => ({
         url: "launches/query",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         data: {
-          query: {},
+          query: {
+            ...createYearOfTheFlightOutput(params.searchYearOfTheFlight),
+            ...createFlightNumberOutput(params.searchFlightNumber),
+            ...createFlightNameOutput(params.searchFlightName),
+          },
           options: {
-            page,
+            page: params.page,
             sort: {
-              date_utc: "asc",
+              date_utc: "desc",
             },
           },
         },
